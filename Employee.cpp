@@ -3,7 +3,7 @@
 Employee_C::Employee_C()
 {
 
-	fullName[50] = ' ';
+	fullName[50-1] = ' ';
 
 	ID = 0;
 
@@ -17,11 +17,11 @@ Employee_C::Employee_C()
 Employee_C::Employee_C(char[], int, double, char)
 {
 
-	fullName[50];
+	fullName[50-1];
 	ID = ID;
 	salary;
 	gender;
-
+	totalSal;
 }
 
 
@@ -70,4 +70,12 @@ void Employee_C::Set_Gender(char gen)
 void Employee_C::Display_Salaries() const
 {
 	cout << "\nThe total for all employee salaries is " << totalSal;
+}
+
+void Employee_C::Display_Info() const
+{
+	cout << "\nEmployee Name . . . " << fullName;
+	cout << "\nEmployee I.D. . . . " << ID;
+	cout << "\nEmployee Salary . . . " << salary;
+	cout << "\nEmployee Gender . . . " << gender;
 }

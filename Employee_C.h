@@ -21,14 +21,23 @@ protected:
 
 	
 
-	char fullName[SIZE];
-	int ID;
-	double salary, totalSal;
-	char gender;
+	//char fullName[SIZE];
+	//int ID;
+	//double salary;
+	//char gender;
+
+	//static double totalSal;
 
 
 
 public:
+
+	char fullName[SIZE];
+	int ID;
+	double salary;
+	char gender;
+
+	static double totalSal;
 
 	Employee_C();
 	//Employee_C(char name . int ID, double sal, char gen);
@@ -46,7 +55,7 @@ public:
 
 	
 	virtual void Display_Salaries() const;
-
+	virtual void Display_Info()const;
 
 
 
