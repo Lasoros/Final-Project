@@ -3,7 +3,7 @@
 Employee_C::Employee_C()
 {
 
-	fullName[SIZE] = ' ';
+	fullName[50] = ' ';
 
 	ID = 0;
 
@@ -17,7 +17,7 @@ Employee_C::Employee_C()
 Employee_C::Employee_C(char[], int, double, char)
 {
 
-	fullName[SIZE];
+	fullName[50];
 	ID = ID;
 	salary;
 	gender;
@@ -28,7 +28,7 @@ Employee_C::Employee_C(char[], int, double, char)
 
 char Employee_C::Get_Name() const
 {
-	return fullName[50];
+	return fullName[50-1];
 }
 
 int Employee_C::Get_ID() const
@@ -48,7 +48,7 @@ char Employee_C::Get_Gender() const
 
 void Employee_C::Set_Name(char name[])
 {
-	fullName[50] = name[50];
+	fullName[50-1] = name[50-1];
 }
 
 void Employee_C::Set_ID(int id)
