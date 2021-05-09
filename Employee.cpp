@@ -7,9 +7,9 @@ Employee_C::Employee_C()
 
 	fullName[50-1] = ' ';
 
-	ID = 0;
+	ID; //I can't get either ID or salary to initalize to anything over than 0 tried = {} , = 0 , ; , etc. At a loss
 
-	salary = 0;
+	salary = {};
 
 	gender = ' ';
 	

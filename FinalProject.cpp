@@ -345,8 +345,8 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 			int unableToFind = -1;
 			int* notFound_p = &unableToFind;
 
-			cout << "\nError: The position of " << searchEmp << " could not be found";
-
+			cout << "\nError: The position of employ ID:" << searchEmp << " could not be found"; // <------------------------------------------------------------ This loop is what pushes to cmd
+			cout << "\nReturning : " << *notFound_p;
 			//return -1;
 			return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED
 		}
