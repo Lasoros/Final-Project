@@ -54,7 +54,7 @@ public:
 	//double Set_TotalSal(double, double);
 	//double Set_TotalSal() const;
 
-	//double Get_Salary(double); //<-----uncomment
+	//double Get_Salary(); //<-----uncomment
 	
 	//virtual double Display_Salaries(Employee_C&);
 	virtual void Display_Info() const;

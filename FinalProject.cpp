@@ -73,11 +73,6 @@ int main()
 	//Display_Salaries(employ);
 	Display_Info(employ);
 
-
-
-
-
-
 	
 
 
@@ -95,6 +90,8 @@ void Fill_Array(char name[], int id, double sal, char gen)
 	int numEmp = 0;
 
 	
+	//Employee_C* employ_p = new Employee_C[SIZE_A];
+
 	Employee_C* employ_p;
 	employ_p = new Employee_C[SIZE_A];
 
@@ -212,11 +209,11 @@ void Extract_ID(fstream& txt, fstream& bin)
 
 	int counter = 0;
 
-	//bin << employ.Get_Name() << endl;
-	//bin << employ.Get_ID() << endl;
-	//bin << employ.Get_Salary()<< endl;
-	//bin << employ.Get_Gender() << endl;
-	//bin.write(reinterpret_cast<char*> (&employ), sizeof(Employee_C));
+	bin << employ_p.Get_Name() << endl;
+	bin << employ_p.Get_ID() << endl;
+	bin << employ_p.Get_Salary()<< endl;
+	bin << employ_p.Get_Gender() << endl;
+	bin.write(reinterpret_cast<char*> (&employ_p), sizeof(Employee_C));
 
 	while (counter != 0) //bin >> employ.ID
 	//do
@@ -298,6 +295,23 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 
 	while (inFile.read((char*)&employ, sizeof(Employee_C)))
 	{
+		if (employ.Get_ID() > 0)
+		{
+			cout << "\nThe position of " << employ.ID << " is " << &employ.ID;
+		}
+		else
+		{
+			int unableToFind = -1;
+			int* notFound_p = &unableToFind;
+
+			cout << "\nError: The position of " << searchEmp << " could not be found";
+
+			return *notFound_p;
+		}
+	}
+
+	while (inFile.read((char*)&employ, sizeof(employ)))
+	{
 		if (employ.Get_ID() == searchEmp)
 		{
 			cout << "\nThe position of " << employ.ID << " is " << &employ.ID;
@@ -306,6 +320,8 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 		{
 			int unableToFind = -1;
 			int* notFound_p = &unableToFind;
+
+			cout << "\nError: The position of " << searchEmp << " could not be found";
 
 			return *notFound_p;
 		}
@@ -317,7 +333,7 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 	{
 		search.read((char*)&employ, sizeof(employ));
 
-		if (employ.Get_ID() == searchEmp)
+		if (employ.Get_ID() > 0)
 		{
 			
 			cout << "\nThe position of " << employ.ID << " is " << &employ.ID; //should print out the position, cant test due to error LNK2001
@@ -328,6 +344,8 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 
 			int unableToFind = -1;
 			int* notFound_p = &unableToFind;
+
+			cout << "\nError: The position of " << searchEmp << " could not be found";
 
 			//return -1;
 			return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED
@@ -354,6 +372,8 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 
 				int unableToFind = -1;
 				int* notFound_p = &unableToFind;
+
+				cout << "\nError: The position of " << searchEmp << " could not be found";
 
 				//return -1;
 				return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED

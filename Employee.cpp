@@ -55,7 +55,7 @@ char Employee_C::Get_Gender() const
 
 void Employee_C::Set_Name(char name[])
 {
-	fullName[50] = name[50];
+	fullName[50-1] = name[50-1];
 }
 
 void Employee_C::Set_ID(int id)
@@ -74,10 +74,10 @@ void Employee_C::Set_Gender(char gen)
 	gender = gen;
 }
 
-//double Employee_C::Get_Salary(double sal)
+//double Employee_C::Get_Salary()
 //{
 //
-//	cout << "\nThe total for all employee salaries is " << totalSal;
+//	cout << "\nthe total for all employee salaries is " << totalSal;
 //	return totalSal;
 //
 //}
