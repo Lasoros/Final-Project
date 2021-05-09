@@ -25,7 +25,6 @@ protected:
 	//int ID;
 	//double salary;
 	//char gender;
-
 	//static double totalSal;
 
 
@@ -36,7 +35,6 @@ public:
 	int ID;
 	double salary;
 	char gender;
-
 	static double totalSal;
 
 	Employee_C();
@@ -53,9 +51,13 @@ public:
 	void Set_Salary(double);
 	void Set_Gender(char);
 
+	//double Set_TotalSal(double, double);
+	//double Set_TotalSal() const;
+
+	//double Get_Salary(double); //<-----uncomment
 	
-	virtual void Display_Salaries() const;
-	virtual void Display_Info()const;
+	//virtual double Display_Salaries(Employee_C&);
+	virtual void Display_Info() const;
 
 
 
