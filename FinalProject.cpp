@@ -39,7 +39,7 @@ int main()
 	cout << "\nPleae enter the binary file name . . . ";
 	getline(cin, fileName);
 
-	fstream bin(fileName, ios::out | ios::binary);
+	
 
 	fstream txt;
 	txt.open(fileName, ios::out);
@@ -50,17 +50,18 @@ int main()
 
 	Fill_Array(employ.fullName, employ.ID , employ.salary , employ.gender);
 
-	cout << "\nGot to here"; // used for debugging, issue still happening in Extract_ID
+	//cout << "\nGot to here"; // used for debugging, issue still happening in Extract_ID
+
+	fstream bin(fileName, ios::out | ios::binary);
+	Extract_ID(txt, bin);
 
 	bin.open(fileName, ios::in | ios::binary);
-	if (txt.fail())
+	if (bin.fail())
 	{
-		cout << "\nBinary file not found. . . program will end";
+		cout << "\nBinary file not found. . . program will end" << endl;
 		system("pause");
-		return 0;
+		return 0; //Unsure as to why the file is not opening, as such this error is thrown everytime
 	}
-
-	Extract_ID(txt,bin);
 	bin.close();
 
 	Find_Employee(txt, bin, notFound_p);
@@ -68,7 +69,7 @@ int main()
 	//cout << "\nEmployee Name . . . " << employ.Get_Name();
 	//cout << "\nEmployee I.D. . . . " << employ.Get_ID();
 	//cout << "\nEmployee Salary . . . " << employ.Get_Salary();
-	//cout << "\nEmployee Gender . . . " << employ.Get_Gender();
+	//cout << "\nEmployee Gender . . . " << employ.Get_Gender(); //used for bebugging purposes
 	
 	//Display_Salaries(employ);
 	Display_Info(employ);
@@ -104,53 +105,53 @@ void Fill_Array(char name[], int id, double sal, char gen)
 
 		int counter = 1;
 
-		//for (int i = 0; i < 1; i++)
-		//{
+		/*for (int i = 0; i < 1; i++)
+		{
 
-		//	cout << "\Please enter the employee's full name . . . ";
-		//	cin.get(name, SIZE);
-		//	cin.clear();
-		//	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "\Please enter the employee's full name . . . ";
+			cin.get(name, SIZE);
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		//	employ[i].Set_Name(name);
+			employ[i].Set_Name(name);
 
-		//	cout << "\nName of emlpoyee is " << employ[i].Get_Name() << endl;
+			cout << "\nName of emlpoyee is " << employ[i].Get_Name() << endl;
 
-		//	cout << "\Please enter the employee's I.D. . . . ";
-		//	cin >> id;
+			cout << "\Please enter the employee's I.D. . . . ";
+			cin >> id;
 
-		//	employ[i].Set_ID(id);
+			employ[i].Set_ID(id);
 
-		//	cout << employ[i].Get_ID() << endl;
+			cout << employ[i].Get_ID() << endl;
 
-		//	cout << "\Please enter the employee's Salary . . . ";
-		//	cin >> sal;
+			cout << "\Please enter the employee's Salary . . . ";
+			cin >> sal;
 
-		//	employ[i].Set_Salary(sal);
+			employ[i].Set_Salary(sal);
 
-		//	cout << employ[i].Get_Salary() << endl;
+			cout << employ[i].Get_Salary() << endl;
 
-		//	cout << "\Please enter the employee's Gender . . . ";
-		//	cin >> gen;
+			cout << "\Please enter the employee's Gender . . . ";
+			cin >> gen;
 
-		//	employ[i].Set_Gender(gen);
+			employ[i].Set_Gender(gen);
 
-		//	cout << employ[i].Get_Gender() << endl;
+			cout << employ[i].Get_Gender() << endl;
 
-		//	cout << "\Please enter 1 to continue else enter 0 to quit. . . ";
-		//	cin >> quit;
-		//	if (quit == 0)
-		//	{
-		//		numEmp = SIZE_A;
-		//		//break;
-		//	}
-		//	else
-		//	{
-		//		counter++;
-		//	}
-		//	cin.ignore();
+			cout << "\Please enter 1 to continue else enter 0 to quit. . . ";
+			cin >> quit;
+			if (quit == 0)
+			{
+				numEmp = SIZE_A;
+				//break;
+			}
+			else
+			{
+				counter++;
+			}
+			cin.ignore();
 
-		//}
+		}*/
 	
 
 		cout << "\Please enter the employee's full name . . . ";
@@ -208,14 +209,40 @@ void Extract_ID(fstream& txt, fstream& bin)
 	Employee_C employ_p;
 
 	int counter = 0;
+	
+	if (bin.is_open())
+	{
+		bin.write(reinterpret_cast<char*> (&employ_p), sizeof(Employee_C));
+
+		bin << employ_p.Get_Name() << endl;
+		bin << employ_p.Get_ID() << endl;
+		bin << employ_p.Get_Salary() << endl;
+		bin << employ_p.Get_Gender() << endl;
+
+		bin.close();
+	}
+	else
+	{
+		cout << "\nError: Couldn't write to file"; //I also handled this in main
+	}
+
+	//cin >> employ_p.fullName;
+	txt << employ_p.Get_Name() << endl;
+	//cin >> employ_p.ID;
+	txt << employ_p.Get_ID() << endl;
+	//cin >> employ_p.salary;
+	txt << employ_p.Get_Salary()<< endl;
+	//cin >> employ_p.gender;
+	txt << employ_p.Get_Gender() << endl;
+	bin.write(reinterpret_cast<char*> (&employ_p), sizeof(Employee_C)); //have tried almost every varation of trying to open the file, just cant seem to get it to work
 
 	bin << employ_p.Get_Name() << endl;
 	bin << employ_p.Get_ID() << endl;
-	bin << employ_p.Get_Salary()<< endl;
+	bin << employ_p.Get_Salary() << endl;
 	bin << employ_p.Get_Gender() << endl;
 	bin.write(reinterpret_cast<char*> (&employ_p), sizeof(Employee_C));
 
-	while (counter != 0) //bin >> employ.ID
+	while (bin >> employ_p.ID) //bin >> employ_p.ID  counter != 0
 	//do
 	{
 
@@ -225,11 +252,17 @@ void Extract_ID(fstream& txt, fstream& bin)
 		//bin << employ.fullName << endl;
 		
 		//cin >> employ.ID;
-		//bin << employ.Get_Name() << endl;
-		//bin << employ.Get_ID() << endl;
-		//bin << employ.Get_Salary() << endl;
-		//bin << employ.Get_Gender() << endl;
-		//bin.write(reinterpret_cast<char*> (&employ), sizeof(Employee_C));
+		bin << employ_p.Get_Name() << endl;
+		bin << employ_p.Get_ID() << endl;
+		bin << employ_p.Get_Salary() << endl;
+		bin << employ_p.Get_Gender() << endl;
+		bin.write(reinterpret_cast<char*> (&employ_p), sizeof(employ_p));
+
+		bin << employ_p.fullName << endl;
+		bin << employ_p.ID << endl;
+		bin << employ_p.salary << endl;
+		bin << employ_p.gender << endl;
+		bin.write(reinterpret_cast<char*> (&employ_p), sizeof(employ_p));
 
 
 		for (int i = 0; i < 100; i++)
@@ -261,12 +294,12 @@ void Extract_ID(fstream& txt, fstream& bin)
 		} //while (employ.Get_ID() != 0);
 	}
 		
-	cout << " Name " << employ_p.Get_Name();
+	/*cout << " Name " << employ_p.Get_Name();
 	cout << " ID " << employ_p.Get_ID();
 	cout << " Salary " << employ_p.Get_Salary();
 	cout << " Gender " << employ_p.Get_Gender();
 
-	cout << "\nhere as well";
+	cout << "\nhere as well";*/
 
 	txt.close();
 }
@@ -274,7 +307,7 @@ void Extract_ID(fstream& txt, fstream& bin)
 int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to return value
 {
 
-	Employee_C employ;
+	Employee_C employ_p;
 
 	int searchEmp;
 
@@ -287,10 +320,56 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 
 	fstream search;
 
+	search.open("fileName", ios::in | ios::binary);
+	if (searchEmp != employ_p.ID) //search.is_open()
+	{
+		search.read(reinterpret_cast<char*> (&employ_p), sizeof(Employee_C));
+
+		cout << "\nThe position of " << searchEmp << " is " << &employ_p.ID; //should print out the position, cant test due to error LNK2001
+
+		search.close();
+	}
+	else
+	{
+		int unableToFind = -1;
+		int* notFound_p = &unableToFind;
+
+		cout << "\nError: The position of employ ID:" << searchEmp << " could not be found"; // <------------------------------------------------------------ This loop is what pushes to cmd
+		cout << "\nReturning : " << *notFound_p;
+		//return -1;
+		return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED
+	}
+
+	while (stop != 0)
+	{
+		search.read(reinterpret_cast<char*> (&employ_p), sizeof(Employee_C));
+
+		if (employ_p.Get_ID() > 0)
+		{
+
+			cout << "\nThe position of " << employ_p.ID << " is " << &employ_p.ID; //should print out the position, cant test due to error LNK2001
+			//employ.Display_Info(); 
+		}
+		else
+		{
+
+			int unableToFind = -1;
+			int* notFound_p = &unableToFind;
+
+			cout << "\nError: The position of employ ID:" << searchEmp << " could not be found"; // <------------------------------------------------------------ This loop is what pushes to cmd
+			cout << "\nReturning : " << *notFound_p;
+			//return -1;
+			return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED
+		}
+
+		cout << "\nEnter 1 to continue or 0 to stop . . . ";
+		cin >> stop;
+	}
+
 	//fstream search("fileName", ios::in | ios::binary);
 	//search.read();
 
-	fstream inFile;
+	/*fstream inFile;
 	inFile.open("fileName", ios::binary);
 
 	while (inFile.read((char*)&employ, sizeof(Employee_C)))
@@ -325,61 +404,37 @@ int Find_Employee(fstream& txt, fstream& bin, int* notFound_p)//make INT to retu
 
 			return *notFound_p;
 		}
-	}
+	}*/
 
 
 	//while (search.read((char*)&employ, sizeof(employ)))
-	while (stop != 0)
-	{
-		search.read((char*)&employ, sizeof(employ));
-
-		if (employ.Get_ID() > 0)
-		{
-			
-			cout << "\nThe position of " << employ.ID << " is " << &employ.ID; //should print out the position, cant test due to error LNK2001
-			//employ.Display_Info(); 
-		}
-		else
-		{
-
-			int unableToFind = -1;
-			int* notFound_p = &unableToFind;
-
-			cout << "\nError: The position of employ ID:" << searchEmp << " could not be found"; // <------------------------------------------------------------ This loop is what pushes to cmd
-			cout << "\nReturning : " << *notFound_p;
-			//return -1;
-			return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED
-		}
-
-		cout << "\nEnter 1 to continue or 0 to stop . . . ";
-		cin >> stop;
-	}
-
-	do
-	{
-		
 	
-			search.read((char*)&employ, sizeof(Employee_C));
 
-			if (employ.Get_ID() == searchEmp)
-			{
+	//do
+	//{
+	//	
+	//
+	//		search.read((char*)&employ, sizeof(Employee_C));
 
-				cout << "\nThe position of " << employ.ID << " is " << &employ.ID; //should print out the position, cant test due to error LNK2001
-				//employ.Display_Info(); 
-			}
-			else
-			{
+	//		if (employ.Get_ID() == searchEmp)
+	//		{
 
-				int unableToFind = -1;
-				int* notFound_p = &unableToFind;
+	//			cout << "\nThe position of " << employ.ID << " is " << &employ.ID; //should print out the position, cant test due to error LNK2001
+	//			//employ.Display_Info(); 
+	//		}
+	//		else
+	//		{
 
-				cout << "\nError: The position of " << searchEmp << " could not be found";
+	//			int unableToFind = -1;
+	//			int* notFound_p = &unableToFind;
 
-				//return -1;
-				return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED
-			}
-		
-	} while (!search.eof());
+	//			cout << "\nError: The position of " << searchEmp << " could not be found";
+
+	//			//return -1;
+	//			return *notFound_p; //was getting error C2082 "Redefinition of formal paratmer "notFound_p" ---- FIXED
+	//		}
+	//	
+	//} while (!search.eof());
 
 
 	/*bin.read(reinterpret_cast<char*> (&employ), sizeof(Employee_C));
